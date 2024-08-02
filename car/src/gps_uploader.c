@@ -25,9 +25,6 @@ void vulnerable_c(char* line, int latitude, int longitude, double time) {
   if (latitude < 0) {
     latitude = -latitude; // integer overflow when latitude == INT_MIN
   }
-  if (longitude < 0) {
-    longitude = -longitude; // integer overflow when longitude == INT_MIN
-  }
 
   size2 = latitude / longitude; // divide by zero
 

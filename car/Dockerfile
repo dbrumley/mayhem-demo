@@ -9,9 +9,6 @@ COPY src src
 RUN gcc -o gps_uploader -g -fsanitize=undefined -fno-sanitize-recover src/gps_uploader.c
 
 # Some demo example GPS data
-COPY testsuite /testsuite
-COPY gps_data.txt /testsuite/gps_data.txt
-
-ENV AFL_INST_LIBS=0
+COPY testsuite testsuite
 
 CMD ["/app/src/wait-for-it.sh", "api", "--", "/app/gps_uploader", "/testsuite/gps_data.txt", "http://api:8000/location"]

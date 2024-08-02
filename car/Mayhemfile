@@ -1,4 +1,4 @@
-project: gps-telemetry
+project: demos/mayhem-demo
 target: car
 advanced_triage: true
 tasks:
