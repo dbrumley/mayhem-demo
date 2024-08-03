@@ -80,7 +80,7 @@ jobs:
     - name: Build the app images
       run: |
         docker compose pull --ignore-buildable -q
-        SHA=${{ github.sha }} docker compose build
+        docker compose build
 
     - name: Push the app images
       run: |
