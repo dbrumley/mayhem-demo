@@ -65,7 +65,7 @@ int parseLatLon(char* line, double* time, double* latitude, double* longitude) {
   *longitude = 0.0;
 
   token = strtok(line, ",");
-  if (token == NULL) return;
+  if (token == NULL) return 1;
 
   // Check message is of assumed message type for our receiver
   if (strncmp(token, "$GPRMC", 6) == 0) {
