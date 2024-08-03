@@ -5,8 +5,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends build-essential
 WORKDIR /app
 COPY src src
 
-# TEST vs PROD builds
+# Binary build
 RUN gcc -o gps_uploader -g -fsanitize=undefined -fno-sanitize-recover src/gps_uploader.c
+RUN gcc -o gps_uploader_gcov -g -fprofile-arcs -ftest-coverage src/gps_uploader.c
 
 # Some demo example GPS data
 COPY testsuite testsuite
