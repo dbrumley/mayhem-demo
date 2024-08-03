@@ -83,6 +83,7 @@ jobs:
         SHA=${{ github.sha }} docker compose build
 
     - name: Push the app images
+      run: |
         SHA=${{ github.sha }} docker compose push -q
 
     # - name: Bring up the app
