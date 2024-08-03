@@ -77,10 +77,12 @@ jobs:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Build and push the app images
+    - name: Build the app images
       run: |
         docker compose pull --ignore-buildable -q
         SHA=${{ github.sha }} docker compose build
+
+    - name: Push the app images
         SHA=${{ github.sha }} docker compose push -q
 
     # - name: Bring up the app
