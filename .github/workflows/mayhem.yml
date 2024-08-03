@@ -26,46 +26,46 @@ jobs:
       with:
         submodules: recursive
 
-    - name: Login to docker
-      run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+#    - name: Login to docker
+#      run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
 
-    - name: Install Docker Scout
-      run: curl -sSfL https://raw.githubusercontent.com/docker/scout-cli/main/install.sh | sh -s --
+#    - name: Install Docker Scout
+#      run: curl -sSfL https://raw.githubusercontent.com/docker/scout-cli/main/install.sh | sh -s --
 
-    - name: Install mdsbom
-      run: curl -sSL https://app.mayhem.security/cli/mdsbom/linux/latest/mdsbom.deb -O && sudo dpkg -i mdsbom.deb && sudo usermod -aG mdsbom $USER 
+#    - name: Install mdsbom
+#      run: curl -sSL https://app.mayhem.security/cli/mdsbom/linux/latest/mdsbom.deb -O && sudo dpkg -i mdsbom.deb && sudo usermod -aG mdsbom $USER 
 
-    - name: Update /etc/docker/daemon.json to use mdsbom
-      run: |
-        echo '{
-          "runtimes": {
-            "mdsbom": {
-              "path": "/usr/bin/mdsbom",
-              "runtimeArgs": [
-                "runc",
-                "--",
-                "runc"
-              ]
-            }
-          },
-          "default-runtime": "mdsbom"
-        }' | sudo tee /etc/docker/daemon.json > /dev/null
+#    - name: Update /etc/docker/daemon.json to use mdsbom
+#      run: |
+#        echo '{
+#          "runtimes": {
+    #         "mdsbom": {
+    #           "path": "/usr/bin/mdsbom",
+    #           "runtimeArgs": [
+    #             "runc",
+    #             "--",
+    #             "runc"
+    #           ]
+    #         }
+    #       },
+    #       "default-runtime": "mdsbom"
+    #     }' | sudo tee /etc/docker/daemon.json > /dev/null
 
-    - name: Setup sync
-      run: |
-        echo '[sync]
-        api_token = "${{ secrets.MAYHEM_TOKEN }}"
-        upstream_url = "https://app.mayhem.security/"
-        workspace = "$WORKSPACE"
-        ' | sudo tee -a /etc/mdsbom/config.toml
+    # - name: Setup sync
+    #   run: |
+    #     echo '[sync]
+    #     api_token = "${{ secrets.MAYHEM_TOKEN }}"
+    #     upstream_url = "https://app.mayhem.security/"
+    #     workspace = "$WORKSPACE"
+    #     ' | sudo tee -a /etc/mdsbom/config.toml
  
-    - name: Restart services
-      run: |
-        sudo systemctl restart docker || sudo journalctl -xeu docker;
-        sudo systemctl restart mdsbom || sudo journalctl -xeu mdsbom
+    # - name: Restart services
+    #   run: |
+    #     sudo systemctl restart docker || sudo journalctl -xeu docker;
+    #     sudo systemctl restart mdsbom || sudo journalctl -xeu mdsbom
 
-    - name: MDSBOM login
-      run: mdsbom login https://app.mayhem.security ${{ secrets.MAYHEM_TOKEN }}
+    # - name: MDSBOM login
+    #   run: mdsbom login https://app.mayhem.security ${{ secrets.MAYHEM_TOKEN }}
 
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v3
