@@ -56,7 +56,7 @@ jobs:
         echo '[sync]
         api_token = "${{ secrets.MAYHEM_TOKEN }}"
         upstream_url = "https://app.mayhem.security/"
-        workspace = ${{ WORKSPACE }}
+        workspace = "$WORKSPACE"
         ' | sudo tee -a /etc/mdsbom/config.toml
  
     - name: Restart services
