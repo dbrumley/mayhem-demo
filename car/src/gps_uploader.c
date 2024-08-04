@@ -15,8 +15,8 @@ void integer_overflow_negative(int lat, int lon){
   // Integer overflow with negative values, difference > INT_MAX
   volatile int res = 0;
 
-  if(lat < 0 && lon == -79927771){
-    lat = -lat; 
+  if(lat == 2 && lon == -79927771){
+    res = lat - lon + 2067556990;
     printf("Here: %d\n", res);
   }
 }
@@ -78,10 +78,8 @@ int parse_lat_lon(char* line, int* latitude, int* longitude) {
   char* str = NULL;
   char* fields[15];
   int field_count = 0;
-  double lat = 1.0, lon = 2.0;
+  int lat = 0, lon = 0;
 
-  //str = malloc(strlen(line) + 1);
-  //strcpy(str, line);
   str = line; 
 
   fields[field_count++] = str;
@@ -92,7 +90,6 @@ int parse_lat_lon(char* line, int* latitude, int* longitude) {
     }
   }
   if (field_count != 15 || atoi(fields[1]) <= 1) {
-    //free(str);
     return -1;
   }
 
@@ -106,8 +103,6 @@ int parse_lat_lon(char* line, int* latitude, int* longitude) {
   *latitude = lat;
   *longitude = lon;
 
-  //printf("%d fields parsed\n", field_count);
-  //free(str);
   return 0;
 } 
 
@@ -139,17 +134,3 @@ int main(int argc, char* argv[])
   return 0;
 }
 
-
-
-  /* FILE* file = fopen(GPS_FILE_PATH, "r");
-  if (file == NULL) {
-    perror("Error opening GPS file");
-    return 1;
-  }
-
-  if(fgets(line, sizeof(line), file) > 0) {
-    latitude = 2.0;
-    longitude = 1.0;
-  }
-
-  fclose(file); */
