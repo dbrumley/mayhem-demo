@@ -78,7 +78,7 @@ install_mayhem() {
   curl -fsSL ${MAYHEM_URL}/cli/mdsbom/linux/latest/mdsbom.deb -o mdsbom.deb && \
      sudo dpkg -i ./mdsbom.deb && sudo apt-get install -f
 
-  rm mdsbom.deb mayhem-install.sh
+  rm mdsbom.deb mayhem-install.sh ./mapi
   echo "Mayhem installed"
 }
 
