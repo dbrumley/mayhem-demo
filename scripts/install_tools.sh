@@ -1,6 +1,6 @@
 #!/bin/bash
 
-MAYHEM_URL="https://veracode.mayhem.security"
+MAYHEM_URL="https://app.mayhem.security"
 
 # Function to check if Docker is installed
 is_docker_installed() {
@@ -101,6 +101,7 @@ else
     install_docker_scout
 fi
 
+echo "Installing Mayhem"
 install_mayhem
 
 echo "To finish installation, you must run:"

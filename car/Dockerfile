@@ -1,5 +1,5 @@
 FROM debian:stable-slim
-RUN apt-get update && apt-get install -y --no-install-recommends build-essential libc6-dbg 
+RUN apt-get update && apt-get install -y --no-install-recommends build-essential libc6-dbg curl netcat-traditional
 
 # Copy in source code
 WORKDIR /app
