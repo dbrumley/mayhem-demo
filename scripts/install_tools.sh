@@ -1,6 +1,6 @@
 #!/bin/bash
 
-MAYHEM_URL="https://app.mayhem.security"
+MAYHEM_URL="https://veracode.mayhem.security"
 
 # Function to check if Docker is installed
 is_docker_installed() {
@@ -11,6 +11,15 @@ is_docker_installed() {
         return 1
     fi
 }
+
+install_docker_scout() {
+    echo "Installing docker scout"
+    # Install scout
+    mkdir -p $HOME/.docker/scout
+    curl -fsSL https://raw.githubusercontent.com/docker/scout-cli/main/install.sh | sh
+    echo "Docker scout is now installed"
+}
+
 
 # Function to install Docker
 # see https://docs.docker.com/engine/install/debian/
@@ -44,10 +53,6 @@ install_docker() {
         docker-ce docker-ce-cli \
         containerd.io docker-buildx-plugin \
         docker-compose-plugin
-
-    # Install scout
-    mkdir -p $HOME/.docker/scout
-    curl -fsSL https://raw.githubusercontent.com/docker/scout-cli/main/install.sh | sh
 
     sudo usermod -aG docker $USER
     echo "Docker and Docker Scout for Linux has been installed successfully."
@@ -88,6 +93,12 @@ then
     echo "Docker is already installed."
 else
     install_docker
+fi
+
+if [ -d $HOME/.docker/scout ]; then
+    echo "Docker scout already installed"
+else
+    install_docker_scout
 fi
 
 install_mayhem

@@ -6,6 +6,5 @@ tasks:
   - name: exploitability_factors
   - name: regression_testing
   - name: behavior_testing
-  - name: coverage_analysis
 cmds:
-  - cmd: /app/gps_uploader  @@
+  - cmd: /app/gps_uploader @@
