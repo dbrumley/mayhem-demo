@@ -17,7 +17,6 @@ void integer_overflow_negative(int lat, int lon) {
 
   if (lat == 2 && lon == -79927771) {
     res = lat - lon + 2067556990;
-    printf("Here: %d\n", res);
   }
 }
 
