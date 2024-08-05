@@ -18,4 +18,4 @@ COPY gps_data.txt gps_data.txt
 # REMOVEME
 COPY crashers crashers
 
-CMD ["/app/src/wait-for-it.sh", "api", "--", "/app/gps_uploader", "/testsuite/gps_data.txt", "http://api:8000/location"]
+CMD ["/app/src/wait-for-it.sh", "api", "--", "/app/gps_uploader", "/app/gps_data.txt", "http://api:8000/location"]
