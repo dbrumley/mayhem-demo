@@ -84,6 +84,19 @@ install_mayhem() {
      sudo dpkg -i ./mdsbom.deb && sudo apt-get install -f
 
   rm mdsbom.deb mayhem-install.sh ./mapi
+
+  if [ ! -f /etc/mdsbom/config.toml ]; 
+  then 
+    echo "Creating mdsbom template."
+    sudo mkdir -p /etc/mdsbom
+    cat <<EOL > /etc/mdsbom/config.toml
+[sync]
+upstream_url = ${MAYHEM_URL}
+api_token = "YOUR TOKEN"
+workspace = "demos"
+EOL
+  fi
+
   echo "Mayhem installed"
 }
 
@@ -108,3 +121,6 @@ echo "To finish installation, you must run:"
 echo "  1. Log in and out so (so that you can run docker as $USER)"
 echo "  2. docker login"
 echo "  3. mayhem login ${MAYHEM_URL} <API_TOKEN>"
+echo "  4. mdsbom login ${MAYHEM_URL} <API_TOKEN>"
+echo "  5. mapi login <API_TOKEN>"
+echo "  6. Put your API key in /etc/mdsbom/config.toml"
