@@ -10,3 +10,9 @@ test: $(TESTS)
 		echo "- Running $$test..."; \
 		./gps_uploader  $$test; \
 	done
+
+upload: $(TESTS)
+	@for test in $^; do \
+		echo "- Running $$test..."; \
+		./gps_uploader  $$test http://api:8000/location; \
+	done
