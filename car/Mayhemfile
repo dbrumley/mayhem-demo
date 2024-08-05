@@ -1,5 +1,5 @@
 project: demos/mayhem-demo
-target: car-finished
+target: car
 advanced_triage: true
 image: dbrumley/car
 tasks:
