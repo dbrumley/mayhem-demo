@@ -8,3 +8,4 @@ tasks:
   - name: behavior_testing
 cmds:
   - cmd: /app/gps_uploader @@
+    cwd: /app
