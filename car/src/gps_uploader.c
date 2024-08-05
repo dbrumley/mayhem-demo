@@ -54,7 +54,6 @@ void stack_exhaustion(int lat, int lon) {
 
 
 void vulnerable_c(int bug_num, char* line, int latitude, int longitude) {
-  printf("Lat: %d Lon: %d\n", latitude, longitude);
   if (bug_num == 0) {
     divide_by_zero(latitude, longitude);
     integer_overflow_negative(latitude, longitude);

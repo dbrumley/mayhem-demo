@@ -84,7 +84,7 @@ jobs:
 
     - name: Push the app images
       run: |
-        docker compose push
+        docker compose push -q
 
     # - name: Bring up the app
     #   run: SHA=${{ github.sha }} docker compose up -d --wait && docker ps
