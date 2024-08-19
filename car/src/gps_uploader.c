@@ -137,7 +137,7 @@ int main(int argc, char* argv[])
   }
 
   if ((in_bytes = read(fd, line, sizeof(line) - 1)) == -1) {
-    printf(stderr, "Couldn't read any bytes. Check your file.\n");
+    fprintf(stderr, "Couldn't read any bytes. Check your file.\n");
     exit(-1);
   }
 

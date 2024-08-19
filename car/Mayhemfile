@@ -2,6 +2,7 @@ project: demos/mayhem-demo
 target: car
 advanced_triage: true
 image: dbrumley/car
+duration: 2700
 tasks:
   - name: exploitability_factors
   - name: regression_testing
@@ -10,3 +11,4 @@ tasks:
 cmds:
   - cmd: /app/gps_uploader @@
     cwd: /app
+    env: {}

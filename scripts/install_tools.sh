@@ -95,6 +95,7 @@ upstream_url = ${MAYHEM_URL}
 api_token = "YOUR TOKEN"
 workspace = "demos"
 EOL
+  fi
 
   echo "Mayhem installed"
 }
