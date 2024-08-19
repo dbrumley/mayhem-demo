@@ -1,6 +1,5 @@
 #!/bin/bash
 
-
 # Enable strict mode
 set -euo pipefail
 
@@ -14,15 +13,8 @@ IMAGE_PREFIX="ghcr.io/forallsecure-customersolutions/mayhem-demo"
 # tmux session name
 SESSION="demo-ts"
 
-
 # Check that we have everything we need in the environment
 environment_check() {
-
-  if [ ! -d ./car ]; then
-    echo "Must run from git root directory"
-    exit 1
-  fi
-
   if [ ! -f /usr/bin/tmux ]; then
     echo "Installing tmux"
     sudo apt-get update && sudo apt-get install -y tmux
@@ -30,6 +22,15 @@ environment_check() {
   if [ ! -f /usr/bin/curl ]; then
     echo "Installing curl"
     sudo apt-get update && sudo apt-get install -y curl
+  fi
+  if [ ! -f /usr/bin/git ]; then
+    echo "Installing git"
+    sudo apt-get update && sudo apt-get install -y git
+  fi
+  if [ ! -d ./car ]; then
+    echo "Checking out mayhem-demo in a tempdir"
+    cd `mktemp -d`
+    git clone https://github.com/ForAllSecure-CustomerSolutions/mayhem-demo.git .
   fi
 
 }
@@ -92,8 +93,8 @@ run_code() {
   # Download a completed run with a crasher. 
   tmux send-keys -t $SESSION:$window "mayhem download -o ./results ${WORKSPACE}/mayhem-demo/car-done" C-m
 
-   # Place lcov file where VSCode plugin coverage-gutters (https://github.com/ryanluker/vscode-coverage-gutters/) can find it.
-  tmux send-keys -t $SESSION:$window "cp ./results/line_coverage.lcov lcov.info" 
+  # Place lcov file where VSCode plugin coverage-gutters (https://github.com/ryanluker/vscode-coverage-gutters/) can find it.
+  tmux send-keys -t $SESSION:$window "cp ./results/line_coverage.lcov lcov.info" C-m
 
   # Set up running the crasher. 
   tmux send-keys -t $SESSION:$window "./gps_uploader ./results/testsuite/fa7f316850f9243a65be2e2bc1940e316be0748231204a3f4238dccf731911f9"
@@ -132,3 +133,4 @@ run_mapi
 run_code
 
 tmux attach-session -t $SESSION
+
