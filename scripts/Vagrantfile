@@ -1,0 +1,18 @@
+# Vagrantfile
+Vagrant.configure("2") do |config|
+  # Use the Debian box
+  config.vm.box = "debian/bookworm64"  # Replace with the desired Debian version
+
+  # Configure the VM (you can customize these options)
+  config.vm.network "private_network", type: "dhcp"
+  config.vm.hostname = "debian-vm"
+
+  # Provision the VM by running a shell script
+  config.vm.provision "shell", path: "install_tools.sh"
+
+  # Optional: Set up more resources if needed
+  config.vm.provider "virtualbox" do |vb|
+    vb.memory = "1024"  # Set memory to 1024MB
+    vb.cpus = 2         # Set 2 CPUs
+  end
+end
