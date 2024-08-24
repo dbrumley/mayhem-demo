@@ -1,7 +1,7 @@
 services:
   api:
     build: ./api
-    image: "ghcr.io/dbrumley/mayhem-demo/api:${SHA:-latest}"
+    image: "api:${SHA:-latest}"
     ports:
       - "8000:8000"
     depends_on:
@@ -9,9 +9,17 @@ services:
 
   ui:
     build: ./ui
-    image: "ghcr.io/dbrumley/mayhem-demo/ui:${SHA:-latest}"
+    image: "ui:${SHA:-latest}"
     ports:
       - "3000:3000"
+    depends_on:
+      - api
+
+
+  car:
+    platform: linux/amd64
+    build: ./car
+    image: "car:${SHA:-latest}"
     depends_on:
       - api
 
@@ -19,10 +27,3 @@ services:
     image: "redis:latest"
     ports:
       - "6379:6379"
-
-  car:
-    platform: linux/amd64
-    build: ./car
-    image: "ghcr.io/dbrumley/mayhem-demo/car:${SHA:-latest}"
-    depends_on:
-      - api
