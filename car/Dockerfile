@@ -13,7 +13,4 @@ RUN make
 COPY testsuite testsuite
 COPY gps_data.txt gps_data.txt
 
-# REMOVEME
-COPY crashers crashers
-
 CMD ["/app/src/wait-for-it.sh", "api", "--", "make",  "upload"]
