@@ -173,3 +173,38 @@ body {
   height: 600px;
   width: 100%;
 }
+
+/* RivianComponent.css */
+
+.rivian-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px;
+  max-width: 1000px;
+  margin: auto;
+}
+
+.rivian-image {
+  flex-basis: 33.33%; /* The image will take up 1/3 of the row */
+}
+
+.rivian-image img {
+  max-width: 100%;
+  height: auto;
+  width: 200px; /* Set the maximum width of the image */
+  border-radius: 10px;
+}
+
+.rivian-description {
+  flex-basis: 66.66%; /* The text will take up 2/3 of the row */
+  margin-left: 20px;
+}
+
+.rivian-description h2 {
+  margin-bottom: 10px;
+}
+
+.rivian-description p {
+  line-height: 1.2;
+}

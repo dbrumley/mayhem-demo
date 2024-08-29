@@ -8,7 +8,8 @@ This demo highlights how Mayhem helps you solve code, API, and SBOM security and
   * Stores results in a database (OSS security)
   * Used by a user UI to display traveled routes  
 
-![GPS Telemetry Image](./gps_telemetry_image.png)
+<img src="screenshot.png" alt="Example Image" width="300" />
+
 
 ## Structure and Vulnerabilities
 

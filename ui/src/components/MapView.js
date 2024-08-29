@@ -17,6 +17,25 @@ L.Icon.Default.mergeOptions({
   shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png'
 });
 
+const RivianComponent = () => {
+  return (
+    <div className="rivian-container">
+      <div className="rivian-image">
+        <img 
+          src="/rivian-hires.png" 
+          alt="Rivian" 
+        />
+      </div>
+      <div className="rivian-description">
+        <h2>Car Adventure Map</h2>
+        <p>
+          On-car code uploads your GPS information to our API to track your adventures!
+        </p>
+      </div>
+    </div>
+  );
+};
+
 const MapView = () => {
   const [locations, setLocations] = useState([]);
 
@@ -95,6 +114,7 @@ const MapView = () => {
 
   return (
     <div>
+      <RivianComponent />
       <div id="map" style={{ height: "600px", width: "100%" }}>
         <MapContainer center={[0, 0]} zoom={2} style={{ height: "100%", width: "100%" }}>
           <TileLayer
