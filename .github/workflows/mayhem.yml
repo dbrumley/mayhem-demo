@@ -195,6 +195,13 @@ jobs:
         category: Mayhem-for-Code
         checkout_path: ${{ github.workspace }}/car
 
+    # Archive SARIF report
+    - name: Archive Code SARIF report
+      uses: actions/upload-artifact@v4
+      with:
+        name: code-sarif/car.sarif
+        path: code-sarif/car.sarif
+
     - name: Upload coverage to Codecov
       if: always()
       uses: codecov/codecov-action@v4
