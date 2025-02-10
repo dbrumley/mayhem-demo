@@ -195,11 +195,11 @@ jobs:
         category: Mayhem-for-Code
         checkout_path: ${{ github.workspace }}/car
 
-    # Archive SARIF report
     - name: Archive Code SARIF report
+      if: always()
       uses: actions/upload-artifact@v4
       with:
-        name: code-sarif/car.sarif
+        name: car.sarif
         path: code-sarif/car.sarif
 
     - name: Upload coverage to Codecov
@@ -254,7 +254,6 @@ jobs:
     - name: Dismiss issues that were not observed at runtime
       uses: advanced-security/dismiss-alerts@v1
       with:
-        # specify a 'sarif-id' and 'sarif-file'
         sarif-id: ${{ steps.upload-api.outputs.sarif-id }}
         sarif-file: dsbom-api-patched.sarif
       env:
