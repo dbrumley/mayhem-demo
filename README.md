@@ -176,7 +176,7 @@ quickly create really long responses.
 
 **Postman:** You can run the mapi demo using the postman collection in the /api directory. Run `docker compose up` and then the following mapi command to exercise the colelction:
 ```
-mapi run mayhem-demo/api 1m api/Mayhem_Demo.postman_collection.json --url http://localhost:8000 --html mapi.html --interactive --basic-auth "me@me.com:123456" --experimental-rules --ignore-rule internal-server-error
+mapi run mayhem-demo/api 1m 39522732-7d445e73-abcb-4de1-b848-f8a80d3c093c?access_key=PMAT-01JM2V52G7P5QZ5SEFD9FPPDRX --url http://localhost:8000 --html mapi.html --interactive --basic-auth "me@me.com:123456" --experimental-rules --ignore-rule internal-server-error
 ```
 
 
