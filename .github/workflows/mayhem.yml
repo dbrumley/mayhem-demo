@@ -124,7 +124,7 @@ jobs:
       run: SHA=${{ github.sha }} docker compose up -d --wait && sleep 1 && docker ps
 
     - name: Wait for the API to be up
-      run: bash -c 'while ! curl -s https://localhost:8443/openapi.json; do sleep 1; done'
+      run: bash -c 'while ! curl -ks https://localhost:8443/openapi.json; do sleep 1; done'
 
     - name: Start API analysis
       uses: forallsecure/mapi-action@v1
