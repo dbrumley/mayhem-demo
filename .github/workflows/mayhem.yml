@@ -109,6 +109,7 @@ jobs:
         password: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Build and push the app images
+      id: build
       run: |
         docker compose pull --ignore-buildable -q
         
@@ -119,6 +120,19 @@ jobs:
         # Push with latest
         docker compose build
         docker compose push -q
+      env:
+        SOURCE_DATE_EPOCH: 0
+        BUILDX_METADATA_PROVENANCE: max
+
+    - name: Extract buildkit metadata
+      run: |
+        echo '${{ steps.build.outputs.metadata }}' > metadata.json
+
+    - name: Upload buildkit metadata artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: metadata-${{ github.sha }}
+        path: metadata.json
 
     - name: Bring up the app
       run: SHA=${{ github.sha }} docker compose up -d --wait && sleep 1 && docker ps
