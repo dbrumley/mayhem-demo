@@ -93,17 +93,16 @@ Now that you have an account, you can start using Mayhem in your local environme
     [https://app.mayhem.security/-/settings/user/api-tokens](https://app.mayhem.security/-/settings/user/api-tokens),
     which is what you’ll use to log in the CLI to the Mayhem server. 
 
-  * Use the token to log in with your token with `mayhem login https://app.
-    mayhem.security <your API token>`
+  * Use the token to log in with your token with `mayhem login https://app.mayhem.security <your API token>`
 
-  * Mayhem Dynamic SBOM currently has a separate CLI install, and currently
+  <!-- * Mayhem Dynamic SBOM currently has a separate CLI install, and currently
     only supports Linux. Install by following
-    [https://app.mayhem.security/docs/dynamic-sbom/installation/](https://app.mayhem.security/docs/dynamic-sbom/installation/).
+    [https://app.mayhem.security/docs/dynamic-sbom/installation/](https://app.mayhem.security/docs/dynamic-sbom/installation/). -->
 
-At the end of this, you will have three CLIs:
+At the end of this, you will have two CLIs:
   1. `mayhem`, which runs Mayhem for Code analysis
   2. `mapi`, which runs Mayhem for API analysis
-  3. `mdsbom`, which runs Mayhem Dynamic SBOM analysis
+  <!-- 3. `mdsbom`, which runs Mayhem Dynamic SBOM analysis -->
 
 Note: All CLIs share authentication information, so you need only log in with
 one CLI.
@@ -174,7 +173,7 @@ also integrated ZAP support just in case, and even have a docker container with
 both `mapi` and `zap`. Try it out with:
 
 ```
-docker run -it -e MAPI_TOKEN <token> forallsecure/mapi:latest run --url 'https://demo-api.mayhem4api.forallsecure.com/api/v3/'  mayhem-demo/api 60  'https://demo-api.mayhem4api.forallsecure.com/api/v3/openapi.json'   --interactive --zap
+docker run -it -e MAPI_TOKEN <token> forallsecure/mapi:latest run --url 'https://demo-api.mayhem4api.forallsecure.com/api/v3/' mayhem-demo/api 60 'https://demo-api.mayhem4api.forallsecure.com/api/v3/openapi.json' --interactive --zap
 ```
 
 **Note:**  Make sure you run `docker compose down -v` to remove any old volumes from previous
@@ -183,7 +182,19 @@ quickly create really long responses.
 
 **Postman:** You can run the mapi demo using the postman collection id. Run `docker compose up` and then the following mapi command to exercise the collection:
 ```
-mapi run mayhem-demo/api 1m 39522732-7d445e73-abcb-4de1-b848-f8a80d3c093c?access_key=PMAT-01JM2V52G7P5QZ5SEFD9FPPDRX --url http://localhost:8000 --html mapi.html --interactive --basic-auth "me@me.com:123456" --experimental-rules --ignore-rule internal-server-error
+mapi run mayhem-demo/api 1m 39522732-7d445e73-abcb-4de1-b848-f8a80d3c093c?access_key=PMAT-01JM2V52G7P5QZ5SEFD9FPPDRX --url https://localhost:8443 --html mapi.html --interactive --basic-auth "me@me.com:123456" --experimental-rules --ignore-rule internal-server-error
+```
+
+**Discovery:** Our API comes bundled with an OpenAPI spec, but `mapi` also supports endpoint discovery! You can use:
+
+```
+mapi discover -p 8443
+```
+
+to find API endpoints on your local machine, and you can investigate the results with:
+
+```
+mapi describe specification api-specs/localhost-8443-full-spec.json
 ```
 
 
@@ -202,19 +213,63 @@ tool that outputs a CycloneDX or SPDX file.
   * You have installed
     [docker](https://docs.docker.com/engine/install/ubuntu/), are logged into
     docker (`docker login`) and have [docker
-    scout](https://docs.docker.com/scout/install/) installed. 
-  * You have `mdsbom` installed and you are logged into Mayhem. 
+    scout](https://docs.docker.com/scout/install/) installed. (You may also need to set $DOCKER_USERNAME and $DOCKER_PASSWORD)
+  * You have a Docker username and token, and have set these with 
+    `export DOCKER_USERNAME=<your docker username>` and `export DOCKER_PASSWORD=<your docker password>`.
+  * You have a Mayhem url and token, and have set these with
+  `export MAYHEM_URL=<your Mayhem URL>` and
+    `export MAYHEM_TOKEN=<your Mayhem API token>`.
 
+_NOTE: For this example, we'll be running `mdsbom` in a docker container (Docker-in-Docker, or DinD). 
+You can also run `mdsbom` directly on your host system by following the instructions for installation 
+here: [https://docs.mayhem.security/dynamic-sbom/installation/](https://docs.mayhem.security/dynamic-sbom/installation/)._
 
 **Steps:**
 
-  1. Run `mdsbom scout ghcr.io/forallsecure-customersolutions/mayhem-demo/api:latest --sca-report-out dsbom-api.sarif`
+  1. Start MDSBOM container
+  ```
+  docker run \
+          -e DOCKER_USERNAME \
+          -e DOCKER_PASSWORD \
+          -e MAYHEM_URL \
+          -e MAYHEM_TOKEN \
+          -v $(pwd)/mdsbom:/mdsbom \
+          -it \
+          --platform linux/amd64 \
+          --rm \
+          --name mdsbom \
+          --privileged \
+          forallsecure/mdsbom:latest /bin/ash
+  ```
 
-  2. That’s it! View the results on the Mayhem UI.
+  2. Log into MDSBOM
+  ```
+  mdsbom login $MAYHEM_URL $MAYHEM_TOKEN
+  ```
+
+  3. Run target container
+  ```
+  docker run --runtime=mdsbom ghcr.io/forsallsecure-customersolutions/mayhem-demo/api:latest
+  ```
+
+  4. Stop the container with Ctrl-C
+
+    4a. Make sure the container is recorded properly
+    ```
+    mdsbom query --local containers -a
+    ```
+    This should return the container you just ran.
+
+  5. Run MDSBOM
+  ```
+  mdsbom run scout ghcr.io/forallsecure-customersolutions/mayhem-demo/api:latest --sca-report-out dsbom-api.sarif
+  ```    
+
+  6. That’s it! You can now view the results on the Mayhem UI.
 
 **Details:**
 
-The command line about did several things all at once:
+The final command line did several things all at once:
 1. Built an SBOM and SCA report from `docker scout`
 2. Identified the attack surface in the `api` image. 
 3. Reduced the SCA findings to only those items on the attack surface. In our
@@ -229,7 +284,7 @@ In more detail, the arguments:
     and more generally any source using a standardized format. 
 
   * `ghcr.io/forallsecure-customersolutions/mayhem-demo/api:latest` is path to
-    the docker image (`docker compose build` will default to this name).
+    the docker image.
 
   * ``--sca-report-out dsbom-api.sarif` says to output a SARIF format as file
     `dsbom-api.sarif`.  
@@ -237,6 +292,8 @@ In more detail, the arguments:
 Tip: You can use `--workspace <name>` to specify a different workspace to
 upload results. 
 
+Tip: All of these commands are in a script under `mdsbom/run_mdsbom.sh`. You can pass the script to the `docker run`
+in Step 1 in place of the `/bin/ash` command to run the script automatically.
 
 ### Step 4C: Run Mayhem for Code to find code vulnerabilities
 
