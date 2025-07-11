@@ -38,7 +38,7 @@ get_os_flavor() {
 
 # Check that we have everything we need in the environment
 environment_check() {
-  if [[ -z "${MAYHEM_TOKEN}" || -z "${DOCKER_USERNAME}" || -z "${DOCKER_PASSWORD}" ]]; then
+  if [[ -z "${MAYHEM_TOKEN:-}" || -z "${DOCKER_USERNAME:-}" || -z "${DOCKER_PASSWORD:-}" ]]; then
     echo "Some environment variables are not set; please set MAYHEM_TOKEN, DOCKER_USERNAME, and DOCKER_PASSWORD."
     exit 1
   fi
@@ -114,9 +114,9 @@ run_mapi() {
 run_mapi_discover() {
   window=1
   tmux new-window -t $SESSION:$window -n "discover"
-  # tmux send-keys -t $SESSION:$window "mapi discover --domains demo-api.mayhem.security --endpoints-file ./scripts/endpoints.txt" C-m
+  tmux send-keys -t $SESSION:$window "mapi discover --domains demo-api.mayhem.security --endpoints-file ./scripts/endpoints.txt" C-m
   tmux send-keys -t $SESSION:$window "mapi discover -p 8443" C-m
-  tmux send-keys -t $SESSION:$window "mapi describe specification api-specs/localhost-8443-full-spec.json"
+  tmux send-keys -t $SESSION:$window "mapi describe specification ./api-specs/localhost-8443-full-spec.json"
 }
 
 run_code() {
