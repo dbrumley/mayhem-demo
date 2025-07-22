@@ -1,21 +1,18 @@
-// .devcontainer/devcontainer.json
 {
-  "name": "C Development Container",
-  "context": "../car",
-  "dockerFile": "../car/Dockerfile",
-  "workspaceFolder": "/app",
-  "settings": {
-    "terminal.integrated.shell.linux": "/bin/bash"
+  "name": "Mayhem Demo Devcontainer",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  "features": {
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {}
   },
   "extensions": [
-    "ms-vscode.cpptools", // C++ Extension
-    "ms-vscode.cmake-tools", // CMake Extension
-    "ryanluker.vscode-coverage-gutters" // Coverage Gutters Extension
+    "ms-azuretools.vscode-docker",
+    "GitHub.copilot"
   ],
-  "forwardPorts": [],
-  "postCreateCommand": "",
-  "remoteUser": "root",
+  "postCreateCommand": "./.devcontainer/setup.sh",
+  "remoteUser": "vscode",
   "mounts": [
-    "source=${localWorkspaceFolder},target=/app,type=bind,consistency=cached"
+    "source=dind-var-lib-docker,target=/var/lib/docker,type=volume"
   ]
 }
